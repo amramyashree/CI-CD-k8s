@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('jenkins-aws-access-key-idx')
+        AWS_ACCESS_KEY_ID = credentials('jenkins-aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-secret-key-id')
         AWS_DEFAULT_REGION = 'ap-south-1'
         ECR_REPOSITORY = '722011624210.dkr.ecr.ap-south-1.amazonaws.com/my-node-app'
