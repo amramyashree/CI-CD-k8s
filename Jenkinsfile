@@ -85,10 +85,10 @@ pipeline {
             }
         }
 
-        stage('Deploy to EKS') {
-            steps {
-                sh 'kubectl apply -f deployment.yaml' // Assuming you have a deployment.yaml file in your repository
-            }
-        }
+        // stage('Deploy to EKS') {
+        //     steps {
+        //         sh 'kubectl apply -f deployment.yaml' // Assuming you have a deployment.yaml file in your repository
+        //     }
+        // }
     }
 }
