@@ -1,29 +1,38 @@
 pipeline {
     agent any
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('jenkins-aws-access-key-idx')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-secret-key-id')
+        AWS_DEFAULT_REGION = 'ap-south-1'
+        ECR_REPOSITORY = '722011624210.dkr.ecr.ap-south-1.amazonaws.com/my-node-app'
+        IMAGE_TAG = 'latest'
+    }
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        stage('Build Docker Image') {
+
+        stage('Build Docker image') {
             steps {
-                sh 'docker build -t my-node-app .'
+                sh 'docker build -t $ECR_REPOSITORY:$IMAGE_TAG .'
             }
         }
+
+        stage('Tag Docker image') {
+            steps {
+                sh 'docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REPOSITORY:$IMAGE_TAG'
+            }
+        }
+
         stage('Push to ECR') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'ecr-credentials', usernameVariable: 'AKIA2QGZ7CMJCH3OX6OT', passwordVariable: 'YFSTZfZHaFzwWxRIZmVi+/IjnseTOMBmHwyHCKQ6')]) {
-                    sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 722011624210.dkr.ecr.ap-south-1.amazonaws.com'
-                    sh 'docker tag my-node-app:latest 722011624210.dkr.ecr.ap-south-1.amazonaws.com/my-node-app:latest'
-                    sh 'docker push 722011624210.dkr.ecr.ap-south-1.amazonaws.com/my-node-app:latest'
-                }
+                sh 'aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY'
+                sh 'docker push $ECR_REPOSITORY:$IMAGE_TAG'
             }
         }
-        // stage('Deploy to EKS') {
-        //     steps {
-        //         sh 'kubectl apply -f deployment.yaml'
-        //     }
-        // }
     }
 }
