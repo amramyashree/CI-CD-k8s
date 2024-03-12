@@ -47,7 +47,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
         ECR_REPOSITORY = '722011624210.dkr.ecr.ap-south-1.amazonaws.com/my-node-app'
         IMAGE_TAG = 'latest'
-        KUBECONFIG = credentials('kubeconfig') // Assuming you have stored your kubeconfig file in Jenkins credentials
+        // KUBECONFIG = credentials('kubeconfig') // Assuming you have stored your kubeconfig file in Jenkins credentials
     }
 
     stages {
