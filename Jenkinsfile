@@ -85,13 +85,13 @@ pipeline {
             }
         }
 
-        stage('Connect to EKS Cluster') {
-            steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl config use-context my-cluster'  // Set the correct context name
-                }
-            }
-        }
+        // stage('Connect to EKS Cluster') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+        //             sh 'kubectl config use-context my-cluster'  // Set the correct context name
+        //         }
+        //     }
+        // }
 
         stage('Deploy to EKS') {
             steps {
