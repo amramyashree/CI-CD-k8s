@@ -47,7 +47,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
         ECR_REPOSITORY = '722011624210.dkr.ecr.ap-south-1.amazonaws.com/my-node-app'
         IMAGE_TAG = 'latest'
-        // KUBECONFIG = credentials('kubeconfig') // Assuming you have stored your kubeconfig file in Jenkins credentials
+        KUBECONFIG = credentials('kubeconfig') // Assuming you have stored your kubeconfig file in Jenkins credentials
     }
 
     stages {
@@ -84,11 +84,18 @@ pipeline {
                 sh 'docker push $ECR_REPOSITORY:$IMAGE_TAG'
             }
         }
+        stage('Connect to EKS Cluster') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl config use-context my-cluster'  // Set the correct context name
+                }
+            }
+        }
 
-        // stage('Deploy to EKS') {
-        //     steps {
-        //         sh 'kubectl apply -f deployment.yaml' // Assuming you have a deployment.yaml file in your repository
-        //     }
-        // }
+        stage('Deploy to EKS') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml' // Assuming you have a deployment.yaml file in your repository
+            }
+        }
     }
 }
