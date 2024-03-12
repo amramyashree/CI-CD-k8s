@@ -156,10 +156,11 @@ pipeline {
         //         sh 'sudo mv kubectl /usr/local/bin/'
         //     }
         // }
+        // KUBECONFIG
         
         stage('Connect to EKS Cluster') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
                     sh 'kubectl config use-context my-cluster'  // Set the correct context name
                 }
             }
