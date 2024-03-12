@@ -84,6 +84,15 @@ pipeline {
                 sh 'docker push $ECR_REPOSITORY:$IMAGE_TAG'
             }
         }
+
+        stage('Install kubectl') {
+            steps {
+                sh 'curl -LO "[1](https://dl.k8s.io/release/)$(curl -L -s [2](https://dl.k8s.io/release/stable.txt%29/bin/linux/amd64/kubectl)"'
+                sh 'chmod +x kubectl'
+                sh 'sudo mv kubectl /usr/local/bin/'
+            }
+        }
+
         stage('Connect to EKS Cluster') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
