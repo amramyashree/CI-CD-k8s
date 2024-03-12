@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nodejs-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-nodejs-app
+  template:
+    metadata:
+      labels:
+        app: my-nodejs-app
+    spec:
+      containers:
+        - name: my-nodejs-app
+          image: 722011624210.dkr.ecr.ap-south-1.amazonaws.com/eks-task-repo:latest
+          ports:
+            - containerPort: 3000
+
+---
