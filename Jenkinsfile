@@ -60,7 +60,7 @@ pipeline {
         stage('Create EKS Cluster') {
             steps {
                 sh 'terraform init'
-                sh 'terraform destroy -auto-approve'
+                sh 'terraform apply -auto-approve'
                 // Assuming you have a main.tf file in your repository that describes your EKS cluster
             }
         }
