@@ -1,4 +1,4 @@
-// // pipeline {
+z// // pipeline {
 // //     agent any
 
 // //     environment {
@@ -155,15 +155,15 @@ pipeline {
             }
         }
 
-        stage('Install kubectl') {
-            steps {
-                sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.29.2/bin/linux/amd64/kubectl"'
-'
+//         stage('Install kubectl') {
+//             steps {
+//                 sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.29.2/bin/linux/amd64/kubectl"'
+// '
                 
-                sh 'chmod +x kubectl'
-                sh 'sudo mv kubectl /usr/local/bin/'
-            }
-        }
+//                 sh 'chmod +x kubectl'
+//                 sh 'sudo mv kubectl /usr/local/bin/'
+//             }
+//         }
 
 
         stage('Connect to EKS Cluster') {
