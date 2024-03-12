@@ -150,18 +150,19 @@ pipeline {
 
         stage('Push to ECR') {
             steps {
-                sh 'aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY'
-                sh 'docker push $ECR_REPOSITORY:$IMAGE_TAG'
+                sh 'aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}'
+                sh 'docker push ${ECR_REPOSITORY}:${IMAGE_TAG}'
             }
         }
 
         stage('Install kubectl') {
             steps {
-                sh 'curl -LO "1$(curl -L -s 2"'
+                sh 'curl -LO "$(curl -L -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
                 sh 'chmod +x kubectl'
                 sh 'sudo mv kubectl /usr/local/bin/'
             }
         }
+
 
         stage('Connect to EKS Cluster') {
             steps {
