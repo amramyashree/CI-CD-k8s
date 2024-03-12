@@ -85,13 +85,21 @@ pipeline {
             }
         }
 
-        // stage('Connect to EKS Cluster') {
-        //     steps {
-        //         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-        //             sh 'kubectl config use-context my-cluster'  // Set the correct context name
-        //         }
-        //     }
-        // }
+        stage('Install kubectl') {
+            steps {
+                sh 'curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"'
+                sh 'chmod +x kubectl'
+                sh 'sudo mv kubectl /usr/local/bin/'
+            }
+        }
+        
+        stage('Connect to EKS Cluster') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl config use-context my-cluster'  // Set the correct context name
+                }
+            }
+        }
 
         stage('Deploy to EKS') {
             steps {
